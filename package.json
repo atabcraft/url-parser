@@ -33,10 +33,10 @@
     "esbuild-node:watch": "esbuild src/cli.ts --bundle --platform=node --watch --sourcemap=external --outfile=dist/esbuild/cli.js"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.21",
-    "@types/node": "^17.0.10",
     "@types/axios": "^0.14.0",
     "@types/cheerio": "^0.22.30",
+    "@types/jest": "^26.0.21",
+    "@types/node": "^17.0.10",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "esbuild": "^0.11.11",
@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
-    "cheerio": "^1.0.0-rc.10"
+    "cheerio": "^1.0.0-rc.10",
+    "dotenv": "^14.2.0"
   }
 }
