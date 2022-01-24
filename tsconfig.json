@@ -25,7 +25,8 @@
     ],
     "lib": [
       "ES6",
-      "DOM"
+      "DOM",
+      "es2020.string"
     ]
   },
   "include": [
