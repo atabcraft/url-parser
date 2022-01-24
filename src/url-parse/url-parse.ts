@@ -1,4 +1,5 @@
 import { UrlParseResult } from "./url-parse-result";
+import axios from "axios";
 
 export class UrlParse {
   private URL_EXPRESSION = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s{2,}\]|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\]\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s\]]{2,}|www\.[a-zA-Z0-9]+\.[^\s\]]{2,}/gi;
@@ -14,7 +15,7 @@ export class UrlParse {
       if (positionToStartSearchFor >= text.length - 1) positionToStartSearchFor = text.length;
       lParathensis = positionToStartSearchFor;
     }
-    if( lParathensis && rParanthesis){
+    if( lParathensis >=0 && rParanthesis){
       const textBetween = text.substring(lParathensis+1, rParanthesis);
       const result = [...textBetween.matchAll(this.URL_REGEX)] || [];
       if ( result?.length == 0) return "";
@@ -24,6 +25,9 @@ export class UrlParse {
   }
 
   async procesUrl(url: string): Promise<UrlParseResult> {
+    console.log(url);
+    const html = await axios.get(url);
+    console.log(html);
     return new UrlParseResult(url, "title", "email");
   }
 }
