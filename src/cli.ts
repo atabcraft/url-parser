@@ -1,4 +1,4 @@
-#!/usr/bin/env node
-import { foo } from './main'
+import { UrlParse } from "./url-parse/url-parse";
 
-foo()
+const urlParser = new UrlParse();
+urlParser.parseText("www.google.com");
