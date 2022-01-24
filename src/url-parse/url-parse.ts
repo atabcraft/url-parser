@@ -1,9 +1,10 @@
 import { UrlParseResult } from "./url-parse-result";
 import axios from "axios";
+import cherrio from "cheerio";
 
 export class UrlParse {
   private URL_EXPRESSION = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s{2,}\]|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\]\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s\]]{2,}|www\.[a-zA-Z0-9]+\.[^\s\]]{2,}/gi;
-  public URL_REGEX = new RegExp(this.URL_EXPRESSION);
+  public EMAIL_EXPRESSION  = /^\S+@\S+\.\S+$/
 
   async parseText(text: string): Promise<string> {
     let lParathensis = text.indexOf("[");
@@ -17,7 +18,7 @@ export class UrlParse {
     }
     if( lParathensis >=0 && rParanthesis){
       const textBetween = text.substring(lParathensis+1, rParanthesis);
-      const result = [...textBetween.matchAll(this.URL_REGEX)] || [];
+      const result = [...textBetween.matchAll(this.URL_EXPRESSION)] || [];
       if ( result?.length == 0) return "";
       return (result.pop() as RegExpMatchArray)[0];
     }
@@ -26,8 +27,18 @@ export class UrlParse {
 
   async procesUrl(url: string): Promise<UrlParseResult> {
     console.log(url);
-    const html = await axios.get(url);
-    console.log(html);
-    return new UrlParseResult(url, "title", "email");
+    const res = await axios.get(url), $ = cherrio.load(res.data);
+    const title = $("title").text();
+    const matchedEmail = this.matchEmail(res.data);
+    console.log(title);
+    console.log(matchedEmail);
+    return new UrlParseResult(url, title, matchedEmail? matchedEmail[0]: "");
   }
+
+  matchEmail = (html: string) :RegExpMatchArray | null => {
+    return String(html)
+      .match(
+        this.EMAIL_EXPRESSION
+      );
+  };
 }

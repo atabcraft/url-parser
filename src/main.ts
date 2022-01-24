@@ -1,10 +1,9 @@
-export const delayMillis = (delayMs: number): Promise<void> => new Promise(resolve => setTimeout(resolve, delayMs));
+import { UrlParse } from "./url-parse/url-parse";
+import { UrlParseResult } from "./url-parse/url-parse-result";
 
-export const greet = (name: string): string => `Hello ${name}`
-
-export const foo = async (): Promise<boolean> => {
-  console.log(greet('World'))
-  await delayMillis(1000)
-  console.log('done')
-  return true
+export const runParser = async (): Promise<UrlParseResult>  => {
+  const urlParser = new UrlParse();
+  const url = await urlParser.parseText("[ https://www.heroinesinc.org/copy-of-contact ]");
+  return await urlParser.procesUrl(url);
 }
+

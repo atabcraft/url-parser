@@ -1,4 +1,3 @@
-import { UrlParse } from "./url-parse/url-parse";
+import { runParser } from "./main";
 
-const urlParser = new UrlParse();
-urlParser.parseText("www.google.com");
+runParser()
