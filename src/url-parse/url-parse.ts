@@ -1,10 +1,11 @@
 import { UrlParseResult } from "./url-parse-result";
 import axios from "axios";
 import cherrio from "cheerio";
+import { Encoder } from "../encoder/encoder";
 
 export class UrlParse {
   private URL_EXPRESSION = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s{2,}\]|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\]\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s\]]{2,}|www\.[a-zA-Z0-9]+\.[^\s\]]{2,}/gi;
-  public EMAIL_EXPRESSION  = /^\S+@\S+\.\S+$/
+  public EMAIL_EXPRESSION  = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/gi
 
   async parseText(text: string): Promise<string> {
     let lParathensis = text.indexOf("[");
@@ -30,9 +31,9 @@ export class UrlParse {
     const res = await axios.get(url), $ = cherrio.load(res.data);
     const title = $("title").text();
     const matchedEmail = this.matchEmail(res.data);
-    console.log(title);
-    console.log(matchedEmail);
-    return new UrlParseResult(url, title, matchedEmail? matchedEmail[0]: "");
+    const encoder:Encoder = new Encoder();
+    const encodedEmail = encoder.encodeSHA256(matchedEmail? matchedEmail[0]: "")
+    return new UrlParseResult(url, title, encodedEmail);
   }
 
   matchEmail = (html: string) :RegExpMatchArray | null => {
