@@ -27,7 +27,6 @@ export class UrlParse {
   }
 
   async procesUrl(url: string): Promise<UrlParseResult> {
-    console.log(url);
     const res = await axios.get(url), $ = cherrio.load(res.data);
     const title = $("title").text();
     const matchedEmail = this.matchEmail(res.data);

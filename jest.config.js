@@ -7,4 +7,5 @@ module.exports = {
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
+  testURL: "https://www.google.com"
 }
