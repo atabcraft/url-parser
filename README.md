@@ -1,4 +1,16 @@
-# TypeScript Boilerplate for 2021
+# Running and testing the scraper
+
+## the scrapper is run with command
+
+```bash
+yarn run cli url-parse/input/i8.txt
+```
+
+## Unit and integration tests can be run with
+```bash
+yarn run test
+```
+# Adopted from TypeScript Boilerplate for 2021
 
 [![Build and test status](https://github.com/metachris/typescript-boilerplate/workflows/Lint%20and%20test/badge.svg)](https://github.com/metachris/typescript-boilerplate/actions?query=workflow%3A%22Build+and+test%22)
 
